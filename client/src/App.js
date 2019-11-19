@@ -106,6 +106,48 @@ class App extends Component {
       .catch(err => console.log("error", err))
   }
 
+  takeTreasure = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/take/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {'name': 'treasure'}
+      
+    })
+      .then(({data}) => this.setState({room: data}))
+      .catch(err => console.log("error", err))
+  }
+
+  sellTreasure = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {'name': 'tiny treasure'}
+      
+    })
+      .then(({data}) => this.setState({room: data}))
+      .catch(err => console.log("error", err))
+  }
+
+  confirmSale = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {'name': 'treasure', 'confirm': 'yes'}
+      
+    })
+      .then(({data}) => this.setState({room: data}))
+      .catch(err => console.log("error", err))
+  }
+
   render() {
     const {title, room_id, description, coordinates, elevation, terrain, players, items, exits, cooldown, errors, messages} = this.state.room
     return (
@@ -133,6 +175,9 @@ class App extends Component {
               checkStatus={this.checkStatus}
               initPlayer={this.initPlayer}
               move={this.move}
+              takeTreasure={this.takeTreasure}
+              sellTreasure={this.sellTreasure}
+              confirmSale={this.confirmSale}
             />
           </div>
         </div>

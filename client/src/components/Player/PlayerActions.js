@@ -1,7 +1,7 @@
 import React from 'react'
 import PlayerMove from './PlayerMove'
 
-function PlayerActions({checkStatus, initPlayer, move}) {
+function PlayerActions({checkStatus, initPlayer, move, takeTreasure, sellTreasure, confirmSale}) {
   return (
     <div className="controlCenter">
       <div className="playerControls">
@@ -31,13 +31,13 @@ function PlayerActions({checkStatus, initPlayer, move}) {
       <div className="itemControls">
         <div className="playerItemInteraction">
           <h3>Item interaction:</h3>
-          <button>Pick Up Item</button>
+          <button onClick={takeTreasure}>Pick Up Item</button>
           <button>Drop Item</button>
         </div>
         <div className="playerTreasureSelling">
           <h3>Treasure Selling:</h3>
-          <button>Sell Treasure</button>
-          <button>Confirm Sale</button>
+          <button onClick={sellTreasure}>Check Treasure Price</button>
+          <button onClick={confirmSale}>Confirm Sale</button>
         </div>
         <div className="playerGhost">
           <h3>Ghostly Companion:</h3>
