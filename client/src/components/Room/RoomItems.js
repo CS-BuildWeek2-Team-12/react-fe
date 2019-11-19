@@ -8,7 +8,7 @@ function RoomItems({items}) {
         <li key={index} >
           {item}
         </li>
-      )) : <li>You Are Carrying Nothing</li>}
+      )) : <li>There is nothing in this room</li>}
     </ul>
   )
 }

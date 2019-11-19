@@ -1,14 +1,14 @@
 import React from 'react'
 import PlayerMove from './PlayerMove'
 
-function PlayerActions() {
+function PlayerActions({checkStatus, initPlayer, move}) {
   return (
     <div className="controlCenter">
       <div className="playerControls">
-        <PlayerMove />
+        <PlayerMove move={move}/>
         <div className="playerStatusChecks">
           <h3>Status Checking:</h3>
-          <button>Check Status</button>
+          <button onClick={checkStatus}>Check Status</button>
           <button>Examine Item/Player</button>
         </div>
         <div className="playerClothingInteraction">
@@ -49,6 +49,10 @@ function PlayerActions() {
           <button>Mine</button>
           <button>Obtain Last Proof</button>
           <button>Get Coin Balance</button>
+        </div>
+        <div className="playerInit">
+          <h3>Start Player:</h3>
+          <button onClick={initPlayer}>Start</button>
         </div>
       </div>
     </div>
