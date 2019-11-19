@@ -30,6 +30,10 @@ button {
   display: block
 }
 
+.container {
+  display: flex;
+}
+
 .room {
   border: 1px solid #0f0f0f;
   padding: 20px;

@@ -56,23 +56,25 @@ class App extends Component {
     return (
       <AppDiv className="App">
         <Header/>
-        <div className="room">
-          <div className="roomHeader">
-            <RoomId room_id={room_id}/>
-            <RoomCoordinates coordinates={coordinates} />
-            <RoomTitle title={title}/>
-            <RoomDescription description={description} />
+        <div className="container">
+          <div className="room">
+            <div className="roomHeader">
+              <RoomId room_id={room_id}/>
+              <RoomCoordinates coordinates={coordinates} />
+              <RoomTitle title={title}/>
+              <RoomDescription description={description} />
+            </div>
+            <RoomErrors errors={errors} />
+            <RoomMessages messages={messages} />
+            <RoomItems items={items} />
+            <RoomPlayers players={players} />
+            <RoomInfo elevation={elevation} terrain={terrain} cooldown={cooldown} />
+            <RoomExits exits={exits} />
           </div>
-          <RoomErrors errors={errors} />
-          <RoomMessages messages={messages} />
-          <RoomItems items={items} />
-          <RoomPlayers players={players} />
-          <RoomInfo elevation={elevation} terrain={terrain} cooldown={cooldown} />
-          <RoomExits exits={exits} />
-        </div>
-        <div className="playerControls">
-          <h3>Player Controls:</h3>
-          <PlayerActions />
+          <div className="playerControls">
+            <h3>Player Controls:</h3>
+            <PlayerActions />
+          </div>
         </div>
       </AppDiv>
     );
