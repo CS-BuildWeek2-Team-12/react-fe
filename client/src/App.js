@@ -162,6 +162,20 @@ class App extends Component {
       .catch(err => console.log("error", err))
   }
 
+  changeName = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {'name': 'Sean Pheneger', 'confirm':'aye'}
+      
+    })
+      .then(({data}) => this.setState({room: data}))
+      .catch(err => console.log("error", err))
+  }
+
   render() {
     const {title, room_id, description, coordinates, elevation, terrain, players, items, exits, cooldown, errors, messages} = this.state.room
     return (
@@ -194,6 +208,7 @@ class App extends Component {
               sellTreasure={this.sellTreasure}
               confirmSale={this.confirmSale}
               dropTreasure={this.dropTreasure}
+              changeName={this.changeName}
             />
           </div>
         </div>
