@@ -119,8 +119,9 @@ button {
 }
 
 .moveControls p:nth-child(2n) {
-  background: green;
-  cursor: pointer
+  background: lime;
+  cursor: pointer;
+  color: black;
 }
 
 .controlCenter {
@@ -131,4 +132,8 @@ button {
   width: 300px;
   background: rgb(99, 4, 23);
   padding: 20px
+}
+
+.moveControls p.disabled {
+  background: red
 }

@@ -120,6 +120,20 @@ class App extends Component {
       .catch(err => console.log("error", err))
   }
 
+  dropTreasure = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {'name': 'treasure'}
+      
+    })
+      .then(({data}) => this.setState({room: data}))
+      .catch(err => console.log("error", err))
+  }
+
   sellTreasure = () => {
     axios({
       method: "post",
@@ -172,12 +186,14 @@ class App extends Component {
           <div className="playerControls">
             <h3 className="pcheading">Player Controls:</h3>
             <PlayerActions
+              room={this.state.room}
               checkStatus={this.checkStatus}
               initPlayer={this.initPlayer}
               move={this.move}
               takeTreasure={this.takeTreasure}
               sellTreasure={this.sellTreasure}
               confirmSale={this.confirmSale}
+              dropTreasure={this.dropTreasure}
             />
           </div>
         </div>

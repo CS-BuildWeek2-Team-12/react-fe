@@ -1,11 +1,11 @@
 import React from 'react'
 import PlayerMove from './PlayerMove'
 
-function PlayerActions({checkStatus, initPlayer, move, takeTreasure, sellTreasure, confirmSale}) {
+function PlayerActions({room, checkStatus, initPlayer, move, takeTreasure, sellTreasure, confirmSale, dropTreasure}) {
   return (
     <div className="controlCenter">
       <div className="playerControls">
-        <PlayerMove move={move}/>
+        <PlayerMove move={move} room={room}/>
         <div className="playerStatusChecks">
           <h3>Status Checking:</h3>
           <button onClick={checkStatus}>Check Status</button>
@@ -32,7 +32,7 @@ function PlayerActions({checkStatus, initPlayer, move, takeTreasure, sellTreasur
         <div className="playerItemInteraction">
           <h3>Item interaction:</h3>
           <button onClick={takeTreasure}>Pick Up Item</button>
-          <button>Drop Item</button>
+          <button onClick={dropTreasure}>Drop Item</button>
         </div>
         <div className="playerTreasureSelling">
           <h3>Treasure Selling:</h3>
