@@ -137,3 +137,7 @@ button {
 .moveControls p.disabled {
   background: red
 }
+
+.examineContainer {
+  margin: 30px 0;
+}

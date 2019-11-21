@@ -14,6 +14,8 @@ import RoomInfo from './components/Room/RoomInfo';
 import PlayerActions from './components/Player/PlayerActions';
 import axios from 'axios';
 import PlayerStatus from './components/Player/PlayerStatus';
+import utf8 from 'utf8';
+import sha256 from 'js-sha256'
 
 // ===========================
 // =======  COMPONENT   ======
@@ -65,8 +67,28 @@ class App extends Component {
       "has_mined": false,
       "errors": [],
       "messages": []
-    }
+    },
+    examine: {
+      "name": "Wishing Well",
+      "description": "You see a faint pattern in the water...\n\n10000010\n00000001\n01001101\n01001000\n00000001\n10000010\n00000001\n01101001\n01001000\n00000001\n10000010\n00000001\n01101110\n01001000\n00000001\n10000010\n00000001\n01100101\n01001000\n00000001\n10000010\n00000001\n00100000\n01001000\n00000001\n10000010\n00000001\n01111001\n01001000\n00000001\n10000010\n00000001\n01101111\n01001000\n00000001\n10000010\n00000001\n01110101\n01001000\n00000001\n10000010\n00000001\n01110010\n01001000\n00000001\n10000010\n00000001\n00100000\n01001000\n00000001\n10000010\n00000001\n01100011\n01001000\n00000001\n10000010\n00000001\n01101111\n01001000\n00000001\n10000010\n00000001\n01101001\n01001000\n00000001\n10000010\n00000001\n01101110\n01001000\n00000001\n10000010\n00000001\n00100000\n01001000\n00000001\n10000010\n00000001\n01101001\n01001000\n00000001\n10000010\n00000001\n01101110\n01001000\n00000001\n10000010\n00000001\n00100000\n01001000\n00000001\n10000010\n00000001\n01110010\n01001000\n00000001\n10000010\n00000001\n01101111\n01001000\n00000001\n10000010\n00000001\n01101111\n01001000\n00000001\n10000010\n00000001\n01101101\n01001000\n00000001\n10000010\n00000001\n00100000\n01001000\n00000001\n10000010\n00000001\n00110100\n01001000\n00000001\n10000010\n00000001\n00110100\n01001000\n00000001\n10000010\n00000001\n00110100\n01001000\n00000001\n00000001",
+      "cooldown": 7.5,
+      "errors": [],
+      "messages": [],
+      
+    },
+    "input": "",
+    "dashNums": "",
+    "dashDir": ""
   }
+
+  wait = cd => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(cd)
+      }, cd * 1000);
+    })
+  }
+
 
   checkStatus = () => {
     axios({
@@ -77,6 +99,86 @@ class App extends Component {
       }
     })
       .then(({data}) => this.setState({player: data}))
+      .catch(err => console.log("error", err))
+    }
+    
+    mine = (proof) => {
+      console.log("FIRED")
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/bc/mine/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      }, data: {'proof': proof}
+    })
+      .then(({data}) => alert(JSON.stringify(data)))
+      .catch(err => console.log("error", err))
+  }
+
+  lastProof = async () => {
+    console.log("FIRED")
+    const {data: last_proof} = await axios({
+      method: "get",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/bc/last_proof/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      }
+    })
+    // .then(({data: last_proof}) => {
+      alert( JSON.stringify(last_proof))
+      return last_proof
+    // })
+    // .catch(err => console.log("error", err))
+  }
+
+  proof_of_work = (last_proof, difficulty) => {
+    console.log("searching for proof...");
+    let proof = 0
+
+    const valid = "0".repeat(difficulty);
+
+    while (!this.valid_proof(proof, last_proof, valid, difficulty)) {
+      proof +=1;
+      if (proof % 1000000 === 0) {
+        console.log(proof);
+      }
+    }
+    console.log("Proof found: ", proof);
+    return proof
+  }
+
+  mineForCoin = async cd => {
+    console.log("starting to mine coins...");
+    await this.wait(cd);
+    const last_proof = await this.lastProof()
+    console.log("last proof: ", last_proof.proof, "difficulty: ", last_proof.difficulty)
+    const proof = await this.proof_of_work(last_proof.proof, last_proof.difficulty)
+    console.log("next valid proof", proof);
+    const {data} = await this.mine(proof)
+    console.log("mine data", data)
+    return this.mineForCoin(data.cooldown)      
+  }
+
+  valid_proof = (proof, validProof, difficulty, last_proof) => {
+    let guessStr = `${last_proof}${proof}`;
+    console.log("GUESSString: ", guessStr)
+    let guess = utf8.encode(guessStr);
+    console.log("GUESS: ", guess)
+    let guessHash = sha256.create().update(guess).hex().slice(0, difficulty);
+    console.log("GUESSING: ", guessHash)
+    return guessHash === validProof
+  }
+  
+  balance = () => {
+    console.log("FIRED")
+    axios({
+      method: "get",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/bc/get_balance/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      }
+    })
+      .then(({data}) => alert(JSON.stringify(data)))
       .catch(err => console.log("error", err))
   }
 
@@ -90,6 +192,43 @@ class App extends Component {
     })
       .then(({data}) => this.setState({room: data}))
       .catch(err => console.log("error", err))
+  }
+
+  dash = (dir) => {
+    let nums = this.state.dashNums.split(",")
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/dash/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {"direction": dir, "num_rooms": `${nums.length}`, "next_room_ids": this.state.dashNums
+
+      }
+    })
+      .then(({data}) => this.setState({room: data}))
+      .catch(err => console.log("error", err))
+  }
+
+  examine = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {
+        'name': this.state.input
+      }
+    })
+      .then(({data}) => this.setState({examine: data}))
+      .catch(err => console.log("error", err))
+  }
+
+  handleInputChange = ({target: {value, name}}) => {
+    this.setState({
+      [name]: value
+    })
   }
 
   move = (direction) => {
@@ -189,13 +328,28 @@ class App extends Component {
       .catch(err => console.log("error", err))
   }
 
+  transmog = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/transmogrify/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {
+        "name": 'treasure'
+      }
+    })
+      .then(({data}) => this.setState({room: data}))
+      .catch(err => console.log("error", err))
+  }
+
   render() {
     const {title, room_id, description, coordinates, elevation, terrain, players, items, exits, cooldown, errors, messages} = this.state.room
     return (
       <AppDiv>
         <Header/>
         <div className="container">
-          <PlayerStatus player={this.state.player} />
+          <PlayerStatus player={this.state.player} examineState={this.state.examine}/>
           <div className="room">
             <div className="roomHeader">
               <RoomId room_id={room_id}/>
@@ -223,6 +377,16 @@ class App extends Component {
               dropTreasure={this.dropTreasure}
               changeName={this.changeName}
               pray={this.pray}
+              examine={this.examine}
+              handleInputChange={this.handleInputChange}
+              input={this.state.input}
+              dash={this.dash}
+              dashDir={this.state.dashDir}
+              dashNums={this.state.dashNums}
+              lastProof={this.lastProof}
+              balance={this.balance}
+              mine={this.mineForCoin}
+              transmog={this.transmog}
             />
           </div>
         </div>
