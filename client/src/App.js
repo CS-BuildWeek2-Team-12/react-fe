@@ -78,7 +78,9 @@ class App extends Component {
     },
     "input": "",
     "dashNums": "",
-    "dashDir": ""
+    "dashDir": "",
+    "flyDir": "",
+    "wear": ""
   }
 
   wait = cd => {
@@ -89,6 +91,23 @@ class App extends Component {
     })
   }
 
+  fly = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/fly/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {
+        "direction": this.state.flyDir
+      }
+    })
+      .then(({data}) => this.setState({player: data}))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
+  }
 
   checkStatus = () => {
     axios({
@@ -99,7 +118,10 @@ class App extends Component {
       }
     })
       .then(({data}) => this.setState({player: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
     }
     
     mine = (proof) => {
@@ -112,7 +134,10 @@ class App extends Component {
       }, data: {'proof': proof}
     })
       .then(({data}) => alert(JSON.stringify(data)))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   lastProof = async () => {
@@ -128,7 +153,7 @@ class App extends Component {
       alert( JSON.stringify(last_proof))
       return last_proof
     // })
-    // .catch(err => console.log("error", err))
+    // .catch(err => {console.log("error", err)})
   }
 
   proof_of_work = (last_proof, difficulty) => {
@@ -179,7 +204,10 @@ class App extends Component {
       }
     })
       .then(({data}) => alert(JSON.stringify(data)))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   initPlayer = () => {
@@ -191,10 +219,13 @@ class App extends Component {
       }
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
-  dash = (dir) => {
+  dash = () => {
     let nums = this.state.dashNums.split(",")
     axios({
       method: "post",
@@ -202,12 +233,15 @@ class App extends Component {
       headers: {
         Authorization: `Token ${process.env.REACT_APP_TOKEN}`
       },
-      data: {"direction": dir, "num_rooms": `${nums.length}`, "next_room_ids": this.state.dashNums
+      data: {"direction": this.state.dashDir, "num_rooms": `${nums.length}`, "next_room_ids": this.state.dashNums
 
       }
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   examine = () => {
@@ -222,7 +256,10 @@ class App extends Component {
       }
     })
       .then(({data}) => this.setState({examine: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   handleInputChange = ({target: {value, name}}) => {
@@ -242,7 +279,10 @@ class App extends Component {
       
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   takeTreasure = () => {
@@ -256,7 +296,10 @@ class App extends Component {
       
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   dropTreasure = () => {
@@ -270,7 +313,10 @@ class App extends Component {
       
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   sellTreasure = () => {
@@ -284,7 +330,10 @@ class App extends Component {
       
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   confirmSale = () => {
@@ -298,7 +347,10 @@ class App extends Component {
       
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   changeName = () => {
@@ -312,7 +364,10 @@ class App extends Component {
       
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   pray = () => {
@@ -325,7 +380,10 @@ class App extends Component {
       
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   transmog = () => {
@@ -340,7 +398,67 @@ class App extends Component {
       }
     })
       .then(({data}) => this.setState({room: data}))
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
+  }
+
+  wear = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/wear/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {
+        "name": this.state.wear
+      }
+      
+    })
+      .then(({data}) => this.setState({player: data}))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
+  }
+
+  remove = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/undress/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {
+        "name": this.state.wear
+      }
+      
+    })
+      .then(({data}) => this.setState({player: data}))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
+  }
+
+  warp = () => {
+    axios({
+      method: "post",
+      url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/warp/`,
+      headers: {
+        Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+      },
+      data: {
+        "room_id": 0
+      }
+      
+    })
+      .then(({data}) => alert(JSON.stringify(data)))
+      .catch(err => {
+        alert(JSON.stringify(err))
+        console.log("error", err)
+      })
   }
 
   render() {
@@ -387,6 +505,12 @@ class App extends Component {
               balance={this.balance}
               mine={this.mineForCoin}
               transmog={this.transmog}
+              wear={this.wear}
+              remove={this.remove}
+              fly={this.fly}
+              flyDir={this.flyDir}
+              wearString={this.state.wear}
+              warp={this.warp}
             />
           </div>
         </div>

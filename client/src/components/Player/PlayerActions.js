@@ -1,7 +1,7 @@
 import React from 'react'
 import PlayerMove from './PlayerMove'
 
-function PlayerActions({room, checkStatus, initPlayer, move, takeTreasure, sellTreasure, confirmSale, dropTreasure, changeName, pray, examine, input, handleInputChange, transmog, dash, dashNums, dashDir, lastProof, mine, balance}) {
+function PlayerActions({warp, room, fly, flyDir, wear, remove, wearString, checkStatus, initPlayer, move, takeTreasure, sellTreasure, confirmSale, dropTreasure, changeName, pray, examine, input, handleInputChange, transmog, dash, dashNums, dashDir, lastProof, mine, balance}) {
   return (
     <div className="controlCenter">
       <div className="playerControls">
@@ -14,8 +14,9 @@ function PlayerActions({room, checkStatus, initPlayer, move, takeTreasure, sellT
         </div>
         <div className="playerClothingInteraction">
           <h3>Equipping Items:</h3>
-          <button disabled>Wear Gear</button>
-          <button disabled>Remove Gear</button>
+          <button onClick={wear}>Wear Gear</button>
+          <input value={wearString} onChange={handleInputChange} type='text' placeholder="jacket" name="wear" />
+          <button onClick={remove}>Remove Gear</button>
         </div>
         <div className="playerModifications">
           <h3>Player Modifications:</h3>
@@ -25,11 +26,11 @@ function PlayerActions({room, checkStatus, initPlayer, move, takeTreasure, sellT
         </div>
         <div className="playerPowerUps">
           <h3>Player Powerups:</h3>
-          <button disabled>Fly</button>
+          <input value={flyDir} onChange={handleInputChange} type='text' placeholder="n" name="flyDir" /><br/>
+          <button onClick={fly}>Fly</button>
           <input value={dashNums} onChange={handleInputChange} type='text' placeholder="10,8,120,6" name="dashNums" /><br/>
           <input value={dashDir} onChange={handleInputChange} type='text' placeholder="n" name="dashDir" />
-          <button disabled onClick={dash}>Dash</button>
-          {/* <button onClick={dash}>Dash</button> */}
+          <button onClick={dash}>Dash</button>
         </div>
       </div>
       <div className="itemControls">
@@ -58,6 +59,7 @@ function PlayerActions({room, checkStatus, initPlayer, move, takeTreasure, sellT
         <div className="playerInit">
           <h3>Start Player:</h3>
           <button onClick={initPlayer}>Start</button>
+          <button onClick={warp}>Warp to start</button>
         </div>
       </div>
     </div>

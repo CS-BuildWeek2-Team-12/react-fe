@@ -15,6 +15,7 @@ const callAxios = () => {
   return axios.create({
     baseURL: "https://lambda-treasure-hunt.herokuapp.com/api/bc/",
     headers: {
+      // Authorization: `Token 441ef21bdc2bc2f8ce9b3eb346a8206ab9b28ef9`,  // KOBI
       Authorization: `Token 9b0358e2d1f341ee80abf2cfe7679e785bcafd06`,
       "Content-Type": "application/json"
     }
