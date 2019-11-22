@@ -95,7 +95,7 @@ class App extends Component {
     })
   }
 
-  fly = () => {
+  fly = (direction) => {
     axios({
       method: "post",
       url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/fly/`,
@@ -103,7 +103,7 @@ class App extends Component {
         Authorization: `Token ${process.env.REACT_APP_TOKEN}`
       },
       data: {
-        "direction": this.state.flyDir
+        "direction": direction
       }
     })
       .then(({data}) => this.setState({room: data}))

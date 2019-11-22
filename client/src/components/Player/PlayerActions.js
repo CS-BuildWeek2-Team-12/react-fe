@@ -26,8 +26,9 @@ function PlayerActions({sellItem, carry, receive, ghost, warp, room, fly, flyDir
         </div>
         <div className="playerPowerUps">
           <h3>Player Powerups:</h3>
-          <input value={flyDir} onChange={handleInputChange} type='text' placeholder="n" name="flyDir" /><br/>
-          <button onClick={fly}>Fly</button>
+          <PlayerMove fly={fly} room={room}/>
+          {/* <input value={flyDir} onChange={handleInputChange} type='text' placeholder="n" name="flyDir" /><br/>
+          <button onClick={fly}>Fly</button> */}
           <input value={dashNums} onChange={handleInputChange} type='text' placeholder="10,8,120,6" name="dashNums" /><br/>
           <input value={dashDir} onChange={handleInputChange} type='text' placeholder="n" name="dashDir" />
           <button onClick={dash}>Dash</button>
