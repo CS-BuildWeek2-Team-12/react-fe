@@ -62,7 +62,7 @@ function PlayerActions({sellItem, carry, receive, ghost, warp, room, fly, flyDir
         <div className="playerInit">
           <h3>Start Player:</h3>
           <button onClick={initPlayer}>Start</button>
-          <button onClick={warp}>Warp to start</button>
+          <button onClick={warp}>Warp Dimensions</button>
         </div>
       </div>
     </div>
