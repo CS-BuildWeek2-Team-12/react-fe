@@ -1,9 +1,10 @@
 import React from 'react'
 
-function PlayerStatus({player, examineState}) {
-  const {name, cooldown, encumbrance, strength, speed, gold, bodywear, footwear, inventory, status, has_mined, errors, messages} = player
+function PlayerStatus({player, examineState, toggleMap}) {
+  const { name, cooldown, encumbrance, strength, speed, gold, bodywear, footwear, inventory, status, has_mined, errors, messages} = player
   return (
     <div className="playerStatus">
+      <button onClick={toggleMap}> Show Map</button>
       <h3>Player Status: </h3>
       <p>Name: {name}</p>
       <p>Cooldown: {cooldown}</p>
@@ -29,7 +30,7 @@ function PlayerStatus({player, examineState}) {
       <div className="examineContainer">
         <h3>Examine Item/Player</h3>
           <ul><li>Name: {examineState.name}</li>
-          <li>Description: {examineState.description}</li>
+          <li className="examineDescription">Description: {examineState.description}</li>
           <li>Cooldown: {examineState.cooldown}</li>
           <li>Errors: {examineState.errors.length > 0 ? examineState.errors.map((err, index) => (
             <span key={index}>{err}</span>

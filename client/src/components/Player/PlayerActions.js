@@ -1,7 +1,7 @@
 import React from 'react'
 import PlayerMove from './PlayerMove'
 
-function PlayerActions({warp, room, fly, flyDir, wear, remove, wearString, checkStatus, initPlayer, move, takeTreasure, sellTreasure, confirmSale, dropTreasure, changeName, pray, examine, input, handleInputChange, transmog, dash, dashNums, dashDir, lastProof, mine, balance}) {
+function PlayerActions({sellItem, carry, receive, ghost, warp, room, fly, flyDir, wear, remove, wearString, checkStatus, initPlayer, move, takeTreasure, sellTreasure, confirmSale, dropTreasure, changeName, pray, examine, input, handleInputChange, transmog, dash, dashNums, dashDir, lastProof, mine, balance}) {
   return (
     <div className="controlCenter">
       <div className="playerControls">
@@ -42,12 +42,14 @@ function PlayerActions({warp, room, fly, flyDir, wear, remove, wearString, check
         <div className="playerTreasureSelling">
           <h3>Treasure Selling:</h3>
           <button onClick={sellTreasure}>Check Treasure Price</button>
+          <input value={sellItem} onChange={handleInputChange} type='text' placeholder="item to sell..." name="sellItem" /><br/>
           <button onClick={confirmSale}>Confirm Sale</button>
         </div>
         <div className="playerGhost">
           <h3>Ghostly Companion:</h3>
-          <button disabled>Ghostly Carry</button>
-          <button disabled>Ghostly Receive</button>
+          <input value={ghost} onChange={handleInputChange} type='text' placeholder="treasure" name="ghost" /><br/>
+          <button onClick={carry}>Ghostly Carry</button>
+          <button onClick={receive}>Ghostly Receive</button>
         </div>
         <div className="playerMining">
           <h3>Mining Interactions:</h3>

@@ -16,6 +16,7 @@ import axios from 'axios';
 import PlayerStatus from './components/Player/PlayerStatus';
 import utf8 from 'utf8';
 import sha256 from 'js-sha256'
+import AsciiMap from './components/Map/AsciiMap';
 
 // ===========================
 // =======  COMPONENT   ======
@@ -80,7 +81,10 @@ class App extends Component {
     "dashNums": "",
     "dashDir": "",
     "flyDir": "",
-    "wear": ""
+    "wear": "",
+    "ghost": "",
+    'sellItem': "",
+    "showMap": false
   }
 
   wait = cd => {
@@ -102,7 +106,7 @@ class App extends Component {
         "direction": this.state.flyDir
       }
     })
-      .then(({data}) => this.setState({player: data}))
+      .then(({data}) => this.setState({room: data}))
       .catch(err => {
         alert(JSON.stringify(err))
         console.log("error", err)
@@ -122,6 +126,42 @@ class App extends Component {
         alert(JSON.stringify(err))
         console.log("error", err)
       })
+    }
+
+    carry = () => {
+      axios({
+        method: "post",
+        url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/carry/`,
+        headers: {
+          Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+        },
+        data: {
+          "name": this.state.ghost
+        }
+      })
+        .then(({data}) => alert(JSON.stringify.fy(data)))
+        .catch(err => {
+          alert(JSON.stringify(err))
+          console.log("error", err)
+        })
+    }
+    
+    receive = () => {
+      axios({
+        method: "post",
+        url: `https://lambda-treasure-hunt.herokuapp.com/api/adv/receive/`,
+        headers: {
+          Authorization: `Token ${process.env.REACT_APP_TOKEN}`
+        },
+        data: {
+          'name': this.state.ghost
+        }
+      })
+        .then(({data}) => alert(JSON.stringify.fy(data)))
+        .catch(err => {
+          alert(JSON.stringify(err))
+          console.log("error", err)
+        })
     }
     
     mine = (proof) => {
@@ -326,7 +366,7 @@ class App extends Component {
       headers: {
         Authorization: `Token ${process.env.REACT_APP_TOKEN}`
       },
-      data: {'name': 'tiny treasure'}
+      data: {'name': this.state.sellItem}
       
     })
       .then(({data}) => this.setState({room: data}))
@@ -461,13 +501,20 @@ class App extends Component {
       })
   }
 
+  toggleMap = () => {
+    console.log("FIredddd")
+    this.setState({showMap: !this.state.showMap})
+  }
+
   render() {
     const {title, room_id, description, coordinates, elevation, terrain, players, items, exits, cooldown, errors, messages} = this.state.room
     return (
+      <>
+          <AsciiMap showMap={this.state.showMap} toggleMap={this.toggleMap}/>
       <AppDiv>
         <Header/>
         <div className="container">
-          <PlayerStatus player={this.state.player} examineState={this.state.examine}/>
+          <PlayerStatus player={this.state.player} examineState={this.state.examine} toggleMap={this.toggleMap}/>
           <div className="room">
             <div className="roomHeader">
               <RoomId room_id={room_id}/>
@@ -511,10 +558,15 @@ class App extends Component {
               flyDir={this.flyDir}
               wearString={this.state.wear}
               warp={this.warp}
+              carry={this.carry}
+              receive={this.receive}
+              ghost={this.state.ghost}
+              sellItem={this.state.sellItem}
             />
           </div>
         </div>
       </AppDiv>
+      </>
     );
   }
 }
